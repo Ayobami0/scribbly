@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .canvas {
+    @apply touch-none z-0 bg-white rounded-xl shadow-2xl;
+  }
+  .canvas-cursor-eraser {
+    cursor:
+      url("./assets/cursors/eraser_onlight.png") 5 23,
+      auto;
+  }
+  .canvas-cursor-pen {
+    cursor:
+      url("./assets/cursors/pen_onlight.png") 0 23,
+      auto;
+  }
+  .toolbar-item {
+    @apply p-[2px] m-[3px] rounded-lg;
+  }
+
+  .toolbar-item:hover {
+    @apply transition-all bg-red-100;
+  }
+  .toolbar {
+    @apply flex flex-row gap-1 rounded-md bg-white 
+      backdrop-blur-md w-fit p-[2px] shadow-xl absolute left-1/2 cursor-pointer items-center;
+  }
+}
+
+@layer utilities {
+  .toolbar-item-active {
+    @apply transition-all bg-red-100;
+  }
+
+  .item-tooltip {
+    @apply bg-white! text-black! shadow-xl rounded-lg cursor-pointer;
+  }
+}
