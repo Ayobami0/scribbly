@@ -2,7 +2,13 @@ import { useWebSocket } from "../hooks";
 import BoardProgressIndicator from "./BoardProgressIndicator";
 import Center from "./Center";
 
-export default function BoardContent({ children }: { children: React.ReactNode }) {
+export default function BoardContent({ isLocal = true, children }: { isLocal?: boolean, children: React.ReactNode }) {
+  if (isLocal) {
+    return <div className="relative h-screen w-screen">
+      {children}
+    </div>;
+  }
+
   let node: React.ReactNode;
   const { status } = useWebSocket();
 

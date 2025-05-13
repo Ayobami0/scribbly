@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Canvas = React.forwardRef((props: { activeItem: any; eraserOptions: any; penOptions: any }, ref: React.ForwardedRef<HTMLCanvasElement>) => {
+const Canvas = React.forwardRef<HTMLCanvasElement, { activeItem: any; eraserOptions: any; penOptions: any }>((props, ref) => {
   const { activeItem, eraserOptions, penOptions } = props;
   const [isDrawing, setIsDrawing] = useState(false);
   const prevPos = useRef({ x: 0, y: 0 })
@@ -45,14 +45,13 @@ const Canvas = React.forwardRef((props: { activeItem: any; eraserOptions: any; p
 
     switch (activeItem) {
       case "pen":
-        console.log("PEN")
         context!.globalCompositeOperation = "source-over";
         context!.strokeStyle = penOptions.color;
         context!.lineWidth = penOptions.stroke;
         break;
       case "eraser":
         context!.globalCompositeOperation = "destination-out";
-        context!.lineWidth = eraserOptions.stroke * 10;
+        context!.lineWidth = eraserOptions.stroke;
         break;
     }
 

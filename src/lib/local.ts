@@ -1,4 +1,5 @@
 import { Board } from "../types";
+import {v4 as uuidV4} from "uuid"
 
 function saveToLocal(board: Board) {
   let data = localStorage.getItem("boards");
@@ -50,9 +51,9 @@ async function createNewBoardLocal(name: string): Promise<Board> {
   }
 
   const now = new Date().toISOString();
-  const id = `${now}-${name}`;
+  const id = uuidV4();
 
-  const board: Board = { id: id, name: name, date: now, participants: 1 };
+  const board: Board = { id: id, name: name, date: now, participants: 1, isLocal: true };
 
   boards.push(board);
 

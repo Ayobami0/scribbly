@@ -14,6 +14,7 @@ type Board = {
   name: string;
   date: string;
   participants: number;
+  isLocal?: boolean;
 };
 
 type WebSocketConnectionStatus = "connecting" | "open" | "closed" | "error";

@@ -3,19 +3,17 @@ import Eraser from "./EraserTool";
 import { useEffect, useRef, useState } from "react";
 import { EllipsisVertical, GripVertical } from "lucide-react";
 import { Chat } from "./Chat";
+import { ActiveItem, EraserOption, PenOption } from "../types";
 
 function DrawToolBar(
-  props: {
-    canvasRef: React.RefObject<HTMLCanvasElement>,
-    activeItem: any;
-    setActiveItem: any;
-    eraserOptions: any;
-    penOptions: any;
-    setErazerOptions: any;
-    setPenOptions: any;
-  }) {
+  { activeItem, setActiveItem, eraserOptions, penOptions, setEraserOptions, setPenOptions, canvasRef }:
+    {
+      activeItem: ActiveItem, setActiveItem: (item: ActiveItem) => void, eraserOptions: EraserOption,
+      penOptions: PenOption, setEraserOptions: (opt: EraserOption) => void,
+      setPenOptions: (opt: PenOption) => void, canvasRef: React.RefObject<HTMLCanvasElement>
+    }
+) {
 
-  const { activeItem, setActiveItem, eraserOptions, penOptions, setErazerOptions, setPenOptions, canvasRef } = props;
   const [grabbing, setGrabbing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const offset = useRef({ x: 0, y: 0 });
@@ -77,12 +75,12 @@ function DrawToolBar(
 
   return (
     <div ref={toolbarRef} className="toolbar" style={style}>
-      <GripVertical width={20} height={20}
+      <GripVertical width={16} height={16}
         className={`${grabbing ? "cursor-grabbing" : "cursor-grab"}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerMove={onPointerMove} />
       <div className="h-full w-1"></div>
       <Pen setActiveItem={setActiveItem} activeItem={activeItem} penOptions={penOptions} setPenOptions={setPenOptions} />
-      <Eraser setActiveItem={setActiveItem} activeItem={activeItem} />
-      <EllipsisVertical width={15} height={15}/>
+      <Eraser setActiveItem={setActiveItem} activeItem={activeItem} setEraserOptions={setEraserOptions} eraserOptions={eraserOptions} />
+      <EllipsisVertical width={15} height={15} />
       <Chat />
     </div>
   );

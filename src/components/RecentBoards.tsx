@@ -3,11 +3,13 @@ import { Board } from "../types";
 import { useEffect, useState } from "react";
 import { loadBoards } from "../utils";
 import { removeFromLocal } from "../lib";
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function RecentBoards() {
   const [boards, setBoards] = useState<Board[]>([]);
+  const navigator = useNavigate();
 
   useEffect(() => {
     const load = () => {
@@ -49,7 +51,9 @@ export default function RecentBoards() {
             <div
               key={b.id}
               className="bg-white shadow-md rounded-xl p-4 hover:shadow-xl transition-all border border-gray-100 cursor-pointer"
-              onClick={() => { console.log(b.id) }}
+              onClick={() => {
+                navigator(`/boards/${b.id}`, { state: b });
+              }}
             >
               <h3 className="text-lg font-bold flex justify-between items-center">{b.name}
                 <Trash width={16} height={16} className="text-red-400 hover:text-red-600" onClick={() => { remove(b.id) }} /></h3>
