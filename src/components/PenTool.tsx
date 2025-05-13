@@ -1,9 +1,9 @@
 import { Tooltip } from "react-tooltip";
 import type { PenOption } from "../types"
 import ColorSelector from "./ColorSelector";
+import { PencilLine } from "lucide-react";
 
 const colors = ["black", "red", "blue", "green", "yellow"];
-
 function Pen(props) {
   const { setActiveItem, activeItem, penOptions, setPenOptions }: {
     setActiveItem: (a: string) => void,
@@ -17,17 +17,7 @@ function Pen(props) {
       data-tooltip-id="pen"
       className={`toolbar-item ${activeItem == 'pen' ? 'toolbar-item-active' : ''}`}
       onClick={() => { setActiveItem("pen") }}>
-      <svg
-        width={24}
-        height={24}
-        viewBox="0 0 0.54 0.54"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M0.068 0.388v0.084h0.084l0.249 -0.249 -0.084 -0.084zM0.466 0.158a0.022 0.022 0 0 0 0 -0.032L0.413 0.074a0.022 0.022 0 0 0 -0.032 0l-0.041 0.041 0.084 0.084z"
-          fillRule="evenodd"
-        />
-      </svg>
+      <PencilLine />
     </a>
     <Tooltip
       id="pen"
@@ -39,7 +29,7 @@ function Pen(props) {
           return <ColorSelector
             color={color}
             active={color == penOptions.color}
-            onSelect={(color) => { console.log(color);setPenOptions({ ...penOptions, color: color }) }}
+            onSelect={(color) => { console.log(color); setPenOptions({ ...penOptions, color: color }) }}
             key={color}
           />
         })}

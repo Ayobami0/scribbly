@@ -5,6 +5,11 @@
 @tailwind utilities;
 
 @layer components {
+  .home-btn {
+    @apply rounded-lg w-15 h-15 md:w-20 md:h-20 bg-purple-300
+    flex justify-center items-center shadow-lg hover:shadow-2xl
+    transition-all;
+  }
   .canvas {
     @apply touch-none z-0 bg-white rounded-xl shadow-2xl;
   }
@@ -25,10 +30,12 @@
   .toolbar-item:hover {
     @apply transition-all bg-red-100;
   }
+
   .toolbar {
     @apply flex flex-row gap-1 rounded-md bg-white 
       backdrop-blur-md w-fit p-[2px] shadow-xl absolute left-1/2 cursor-pointer items-center;
   }
+
 }
 
 @layer utilities {
@@ -38,5 +45,23 @@
 
   .item-tooltip {
     @apply bg-white! text-black! shadow-xl rounded-lg cursor-pointer;
+  }
+
+  @keyframes flowing-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .flowing-bounce {
+    animation: flowing-bounce 1s ease-in-out infinite;
+  }
+
+  .flowing-bounce:hover {
+    opacity: 0.8;
   }
 }

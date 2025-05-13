@@ -1,6 +1,8 @@
 import Pen from "./PenTool";
 import Eraser from "./EraserTool";
 import { useEffect, useRef, useState } from "react";
+import { EllipsisVertical, GripVertical } from "lucide-react";
+import { Chat } from "./Chat";
 
 function DrawToolBar(
   props: {
@@ -74,30 +76,18 @@ function DrawToolBar(
   };
 
   return (
-    <div ref={toolbarRef} className={`toolbar`} style={style}>
-      <DragIndicator
+    <div ref={toolbarRef} className="toolbar" style={style}>
+      <GripVertical width={20} height={20}
         className={`${grabbing ? "cursor-grabbing" : "cursor-grab"}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerMove={onPointerMove} />
       <div className="h-full w-1"></div>
       <Pen setActiveItem={setActiveItem} activeItem={activeItem} penOptions={penOptions} setPenOptions={setPenOptions} />
       <Eraser setActiveItem={setActiveItem} activeItem={activeItem} />
+      <EllipsisVertical width={15} height={15}/>
+      <Chat />
     </div>
   );
 }
 
-const DragIndicator = (props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) => (
-  <svg
-    width={16}
-    height={16}
-    viewBox="0 0 1.2 1.2"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <g data-name="Layer 2">
-      <path fill="none" d="M0 0h1.2v1.2H0z" data-name="invisible box" />
-      <path d="M.55.3a.1.1 0 0 1-.1.1.1.1 0 0 1-.1-.1.1.1 0 0 1 .2 0m0 .3a.1.1 0 0 1-.1.1.1.1 0 0 1-.1-.1.1.1 0 0 1 .2 0m0 .3a.1.1 0 0 1-.1.1.1.1 0 0 1-.1-.1.1.1 0 0 1 .2 0m.3-.6a.1.1 0 0 1-.1.1.1.1 0 0 1-.1-.1.1.1 0 0 1 .2 0m0 .3a.1.1 0 0 1-.1.1.1.1 0 0 1-.1-.1.1.1 0 0 1 .2 0m0 .3a.1.1 0 0 1-.1.1.1.1 0 0 1-.1-.1.1.1 0 0 1 .2 0" />
-    </g>
-  </svg>
-);
 
 
 export default DrawToolBar;
