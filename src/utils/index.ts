@@ -1,14 +1,25 @@
-import { createNewBoard, createNewBoardLocal, loadBoardsLocal } from "../lib";
+import { createNewBoard, createNewBoardLocal, loadBoardsLocal, saveToLocal } from "../lib";
+import { getRemoteBoardInfo } from "../lib/api";
 import { Board } from "../types";
 
 async function createBoard(name: string, isLocal: boolean = true): Promise<Board> {
-  return isLocal
-    ? await createNewBoardLocal(name)
-    : await createNewBoard(name);
+  if (isLocal) {
+    return await createNewBoardLocal(name)
+  } else {
+    const board = await createNewBoard(name);
+    saveToLocal(board);
+
+    return board;
+  }
 }
 
 function loadBoards(): Board[] {
   return loadBoardsLocal()
 }
 
-export { createBoard, loadBoards }
+async function saveRemoteBoardInfo(id: string) {
+  const board = await getRemoteBoardInfo(id);
+  saveToLocal(board);
+}
+
+export { createBoard, loadBoards, saveRemoteBoardInfo }

@@ -1,19 +1,22 @@
 import {
   Clipboard as ClipboardIcon,
-  LogIn,
-  Plus,
   Wifi,
   X,
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { Modal } from "./Modal";
 import { HomeButton } from "./HomeButton";
-import { createBoard } from "../utils";
+import { createBoard, saveRemoteBoardInfo } from "../utils";
+import { useNavigate } from "react-router-dom";
+import Spinnner from "./Spinner";
 
 export function CreateOrJoinRemote() {
   const ref = useRef<HTMLDialogElement | null>(null);
   const [boardId, setBoardId] = useState("");
+  const [newLoading, setNewLoading] = useState(false);
+  const [joinLoading, setJoinLoading] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");
+  const navigate = useNavigate();
 
   function showModal() {
     ref.current?.show();
@@ -22,18 +25,31 @@ export function CreateOrJoinRemote() {
   }
 
   function handleJoin() {
-    if (boardId.trim()) {
-      ref.current?.close();
+    setJoinLoading(true);
+    const id = boardId.trim();
+
+    if (id) {
+      saveRemoteBoardInfo(id).then((_) => {
+        ref.current?.close();
+        navigate(`boards/${id}`)
+      }).catch((e) => {
+        alert(e);
+      }).finally(() => {
+        setJoinLoading(false);
+      });
     }
   }
 
   function handleCreate() {
+    setNewLoading(true);
     if (newBoardName.trim()) {
       createBoard(newBoardName, false).then((e) => {
         alert(`Board ${e.name} created!`);
         ref.current?.close();
       }).catch((e) => {
         alert(e);
+      }).finally(() => {
+        setNewLoading(false);
       });
     }
   }
@@ -65,7 +81,7 @@ export function CreateOrJoinRemote() {
             onClick={handleJoin}
             disabled={boardId == "" ? true : false}
           >
-            <LogIn className="w-4 h-4" />
+            {joinLoading ? <Spinnner height={20} width={20} /> : <></>}
             Join
           </button>
           <h3 className="text-lg font-semibold flex items-center justify-center gap-2">
@@ -82,7 +98,7 @@ export function CreateOrJoinRemote() {
             onClick={handleCreate}
             disabled={newBoardName == "" ? true : false}
           >
-            <Plus className="w-4 h-4" />
+            {newLoading ? <Spinnner height={20} width={20} /> : <></>}
             Create
           </button>
         </div>

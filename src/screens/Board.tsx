@@ -3,9 +3,10 @@ import Canvas from "../components/Canvas";
 import DrawToolBar from "../components/DrawToolBar";
 import { ActiveItem, EraserOption, PenOption } from "../types";
 import { WebSocketProvider } from "../context/WebSocketContext";
-import BoardContent from "../components/BoardContent";
 import { useLocation, useParams } from "react-router-dom";
 import type { Board as BoardType } from "../types";
+import InfoToolBar from "../components/InfoToolBar";
+import { NetworkBoardStateProvider } from "../context/NetworkBoardStateContext";
 
 export default function Board() {
   const { id } = useParams();
@@ -23,8 +24,9 @@ export default function Board() {
   if (isRemote) {
     return <>
       <WebSocketProvider id={id!}>
-        <BoardContent isLocal={false}>
+        <NetworkBoardStateProvider>
           <Canvas ref={canvasRef} activeItem={activeItem} eraserOptions={eraserOptions} penOptions={penOptions} />
+          <InfoToolBar shareLink={`${document.location.toString()}`} />
           <DrawToolBar
             canvasRef={canvasRef}
             activeItem={activeItem}
@@ -34,14 +36,15 @@ export default function Board() {
             eraserOptions={eraserOptions}
             setEraserOptions={setEraserOptions}
           />
-        </BoardContent>
+        </NetworkBoardStateProvider>
       </WebSocketProvider>
     </>
   }
 
   return <>
-    <BoardContent>
+    <div className="relative h-screen w-screen">
       <Canvas ref={canvasRef} activeItem={activeItem} eraserOptions={eraserOptions} penOptions={penOptions} />
+      <InfoToolBar shareLink={`${document.location.toString()}`} />
       <DrawToolBar
         canvasRef={canvasRef}
         eraserOptions={eraserOptions}
@@ -51,6 +54,6 @@ export default function Board() {
         setPenOptions={setPenOptions}
         penOptions={penOptions}
       />
-    </BoardContent>
+    </div>
   </>
 }

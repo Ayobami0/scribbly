@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useWebSocket } from "../hooks";
+import { MType } from "../types";
 
 const Canvas = React.forwardRef<HTMLCanvasElement, { activeItem: any; eraserOptions: any; penOptions: any }>((props, ref) => {
   const { activeItem, eraserOptions, penOptions } = props;
   const [isDrawing, setIsDrawing] = useState(false);
   const prevPos = useRef({ x: 0, y: 0 })
   const wrapperRef = useRef<HTMLDivElement | null>(null)
+  const socket = useWebSocket();
 
 
   let cusorState: string = "";
@@ -37,11 +40,21 @@ const Canvas = React.forwardRef<HTMLCanvasElement, { activeItem: any; eraserOpti
   const onPointerMove = (e: React.PointerEvent) => {
     if (!isDrawing) return;
 
+    const stroke = activeItem === "pen" ? penOptions.stroke : eraserOptions.stroke;
+    const color = activeItem === "pen" ? penOptions.color : null;
+
     const curr = getPointerPosition(e);
     const prev = prevPos.current;
 
     const canvas = ref.current;
     const context = canvas?.getContext('2d');
+
+    if (socket.socket) {
+      const msg = { type: MType.Drawing, data: { x: curr.x, y: curr.y, stroke: stroke, type: activeItem, color: color } }
+      socket.socket.send(JSON.stringify(msg))
+      return;
+    }
+
 
     switch (activeItem) {
       case "pen":
@@ -62,6 +75,7 @@ const Canvas = React.forwardRef<HTMLCanvasElement, { activeItem: any; eraserOpti
     context!.stroke();
 
     prevPos.current = curr;
+
   }
 
   useEffect(() => {

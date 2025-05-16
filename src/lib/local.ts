@@ -1,5 +1,5 @@
 import { Board } from "../types";
-import {v4 as uuidV4} from "uuid"
+import { v4 as uuidV4 } from "uuid"
 
 function saveToLocal(board: Board) {
   let data = localStorage.getItem("boards");
@@ -50,7 +50,7 @@ async function createNewBoardLocal(name: string): Promise<Board> {
     return Promise.reject("unable to create board");
   }
 
-  const now = new Date().toISOString();
+  const now = new Date();
   const id = uuidV4();
 
   const board: Board = { id: id, name: name, date: now, participants: 1, isLocal: true };
@@ -74,8 +74,8 @@ function loadBoardsLocal() {
   if (!Array.isArray(boards)) {
     return [];
   }
-
-  return boards;
+  const updated = boards.map((e) => ({ ...e, date: new Date(e.date) }));
+  return updated;
 }
 
 export { createNewBoardLocal, loadBoardsLocal, saveToLocal, removeFromLocal }

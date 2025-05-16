@@ -6,11 +6,11 @@ import { Chat } from "./Chat";
 import { ActiveItem, EraserOption, PenOption } from "../types";
 
 function DrawToolBar(
-  { activeItem, setActiveItem, eraserOptions, penOptions, setEraserOptions, setPenOptions, canvasRef }:
+  { activeItem, setActiveItem, eraserOptions, penOptions, setEraserOptions, setPenOptions, canvasRef, isLocal }:
     {
       activeItem: ActiveItem, setActiveItem: (item: ActiveItem) => void, eraserOptions: EraserOption,
       penOptions: PenOption, setEraserOptions: (opt: EraserOption) => void,
-      setPenOptions: (opt: PenOption) => void, canvasRef: React.RefObject<HTMLCanvasElement>
+      setPenOptions: (opt: PenOption) => void, canvasRef: React.RefObject<HTMLCanvasElement>, isLocal?: boolean
     }
 ) {
 
@@ -80,8 +80,10 @@ function DrawToolBar(
       <div className="h-full w-1"></div>
       <Pen setActiveItem={setActiveItem} activeItem={activeItem} penOptions={penOptions} setPenOptions={setPenOptions} />
       <Eraser setActiveItem={setActiveItem} activeItem={activeItem} setEraserOptions={setEraserOptions} eraserOptions={eraserOptions} />
-      <EllipsisVertical width={15} height={15} />
-      <Chat />
+      {!isLocal ? <>
+        <EllipsisVertical width={15} height={15} />
+        <Chat />
+      </> : <></>}
     </div>
   );
 }
